@@ -40,7 +40,7 @@
                }).
 
 -define(DEFAULT_CHECK_INTERVAL, 5000).
--define(DEFAULT_OVERLOAD_THRESHOLD, 10000).
+-define(DEFAULT_OVERLOAD_THRESHOLD, 200).
 
 reg_name(Mod, Index) ->
     ModBin = atom_to_binary(Mod, latin1),
@@ -65,9 +65,7 @@ init([Parent, RegName, Mod, Index]) ->
     RequestInterval = app_helper:get_env(riak_core,
                                          vnode_check_request_interval,
                                          Interval div 2),
-    Threshold = app_helper:get_env(riak_core,
-                                   vnode_overload_threshold,
-                                   ?DEFAULT_OVERLOAD_THRESHOLD),
+    Threshold = ?DEFAULT_OVERLOAD_THRESHOLD,
 
     SafeInterval =
         case (Threshold == undefined) orelse (Interval < Threshold) of
